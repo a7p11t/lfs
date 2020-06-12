@@ -19,7 +19,8 @@ tar -xf gcc-*.tar.xz -C /tmp/ \
       `dirname $($LFS_TGT-gcc -print-libgcc-file-name)`/include-fixed/limits.h \
   && for file in gcc/config/{linux,i386/linux{,64}}.h; do \
      cp -uv $file{,.orig}; \
-     sed -e 's@/lib\(64\)\?\(32\)\?/ld@/tools&@g' -e 's@/usr@/tools@g' $file.orig > $file; \
+     sed -e 's@/lib\(64\)\?\(32\)\?/ld@/tools&@g' \
+     -e 's@/usr@/tools@g' $file.orig > $file; \
      echo -e "#undef STANDARD_STARTFILE_PREFIX_1 \n#undef STANDARD_STARTFILE_PREFIX_2 \n#define STANDARD_STARTFILE_PREFIX_1 \"/tools/lib/\" \n#define STANDARD_STARTFILE_PREFIX_2 \"\"" >> $file; \
      touch $file.orig; \
     done \
@@ -28,6 +29,8 @@ tar -xf gcc-*.tar.xz -C /tmp/ \
        sed -e '/m64=/s/lib64/lib/' -i.orig gcc/config/i386/t-linux64 \
       ;; \
     esac \
+  && sed -e '1161 s|^|//|' \
+  -i libsanitizer/sanitizer_common/sanitizer_platform_limits_posix.cc \
   && mkdir -v build \
   && cd build \
   && CC=$LFS_TGT-gcc        \
@@ -50,6 +53,7 @@ tar -xf gcc-*.tar.xz -C /tmp/ \
   && rm -rf /tmp/gcc
 
 # perform a sanity check
+echo 'Sanity Check'
 echo 'int main(){}' > dummy.c \
   && cc dummy.c \
   && readelf -l a.out | grep ': /tools' \

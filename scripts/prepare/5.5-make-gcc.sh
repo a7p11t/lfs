@@ -44,7 +44,6 @@ tar -xf gcc-*.tar.xz -C /tmp/ \
     --disable-threads                              \
     --disable-libatomic                            \
     --disable-libgomp                              \
-    --disable-libmpx                               \
     --disable-libquadmath                          \
     --disable-libssp                               \
     --disable-libvtv                               \

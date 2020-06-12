@@ -9,7 +9,7 @@ tar -xf linux-*.tar.xz -C /tmp/ \
   && mv /tmp/linux-* /tmp/linux \
   && pushd /tmp/linux \
   && make mrproper \
-  && make INSTALL_HDR_PATH=dest headers_install \
-  && cp -rv dest/include/* /tools/include \
+  && make headers \
+  && cp -rv usr/include/* /tools/include \
   && popd \
   && rm -rf /tmp/linux

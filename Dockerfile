@@ -1,4 +1,4 @@
-FROM debian:8
+FROM debian:10
 
 # image info
 LABEL description="Automated LFS build"
@@ -58,6 +58,7 @@ RUN apt-get update && apt-get install -y \
     genisoimage                          \
     libelf-dev                           \
     bc                                   \
+    python3                              \
     libssl-dev                           \
  && apt-get -q -y autoremove             \
  && rm -rf /var/lib/apt/lists/*
